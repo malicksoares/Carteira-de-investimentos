@@ -1,0 +1,12 @@
+-- Cada ativo passa a pertencer a uma pessoa usuária (carteira individual),
+-- ganha uma categoria (Ações, Cripto, Renda Fixa...) e uma quantidade,
+-- que juntas permitem calcular o valor total investido em cada ativo.
+ALTER TABLE assets
+    ADD COLUMN user_id BIGINT NOT NULL REFERENCES users (id) ON DELETE CASCADE,
+    ADD COLUMN category TEXT NOT NULL DEFAULT 'Outros',
+    ADD COLUMN quantity DOUBLE PRECISION NOT NULL DEFAULT 1;
+
+-- O nome do ativo deixa de ser único globalmente e passa a ser único
+-- apenas dentro da carteira de cada pessoa usuária.
+ALTER TABLE assets DROP CONSTRAINT IF EXISTS assets_name_key;
+ALTER TABLE assets ADD CONSTRAINT assets_user_id_name_key UNIQUE (user_id, name);

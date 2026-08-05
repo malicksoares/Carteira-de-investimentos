@@ -1,0 +1,7 @@
+ALTER TABLE assets DROP CONSTRAINT IF EXISTS assets_user_id_name_key;
+ALTER TABLE assets ADD CONSTRAINT assets_name_key UNIQUE (name);
+
+ALTER TABLE assets
+    DROP COLUMN IF EXISTS quantity,
+    DROP COLUMN IF EXISTS category,
+    DROP COLUMN IF EXISTS user_id;
